@@ -74,7 +74,7 @@ found in the LICENSE file.
     <script src="js/third-party/wglu/wglu-stats.js"></script>
     <script src="js/third-party/wglu/wglu-texture.js"></script>
 
-    <script src="js/vr-cube-sea.js"></script>
+    <script src="js/vr-cube-sea-with-video.js"></script>
     <script src="js/vr-samples-util.js"></script>
   </head>
   <body>
@@ -313,10 +313,9 @@ found in the LICENSE file.
                 }
                 else {
                   // Direct render to VR framebuffer
-                  var viewMat = i == 0 ? frameData.leftViewMatrix : frameData.rightViewMatrix;
-                  cubeSea.render(i == 0 ? frameData.leftProjectionMatrix : frameData.rightProjectionMatrix, viewMat, stats);
+                  var viewMat_ = i == 0 ? frameData.leftViewMatrix : frameData.rightViewMatrix;
+                  cubeSea.render(i == 0 ? frameData.leftProjectionMatrix : frameData.rightProjectionMatrix, viewMat_, stats);
                 }
-
               }
               gl.disable(gl.SCISSOR_TEST);
             }

@@ -245,6 +245,10 @@ window.VRCubeSea = (function () {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       // object will disappear every time we call texImage2D and pass it a video
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, videoEl);
+      if (multiview) {
+        //gl.clearColor(0.8, 0.2, 0.3, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      }
     }
     loops += 1;
 
