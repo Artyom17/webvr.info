@@ -116,14 +116,14 @@ found in the LICENSE file.
                   value += " ";
                 value += obj[key][idx].toFixed(3);
               }
-              li.innerHTML = "<b>" + key + ":</b> <span class='float-array'>[" + value + " ]</span>";
+              li.innerHTML = "<b>" + key + ":</b> <span id='" + key + "'> class='float-array'>[" + value + " ]</span>";
             } else if (typeof obj[key] === "number" && obj[key] !== (obj[key]|0)) {
-              li.innerHTML = "<b>" + key + ":</b> " + obj[key].toFixed(3);
+              li.innerHTML = "<b>" + key + ":</b> " + " <span id='" + key + "'>" + obj[key].toFixed(3) + " </span>";
             } else if (typeof obj[key] === "object") {
               li.innerHTML = "<b>" + key + ":</b>";
               li.appendChild(buildMemberList(obj[key], depth+1));
             } else {
-              li.innerHTML = "<b>" + key + ":</b> " + obj[key];
+              li.innerHTML = "<b>" + key + ":</b> <span id='" + key + "'>" + obj[key] + " </span>";
             }
 
             ul.appendChild(li);
