@@ -173,6 +173,7 @@ window.VRSamplesUtil = (function () {
   return {
     isMobile: isMobile,
     addError: addError,
+    getMessageContainer: getMessageContainer,
     addInfo: addInfo,
     addButton: addButton,
     removeButton: removeButton,

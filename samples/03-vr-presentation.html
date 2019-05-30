@@ -181,6 +181,18 @@ found in the LICENSE file.
         // recommended dimensions for the display.
         onResize();
 
+        // adding isPresenting debug information
+        var elementId = "debug";
+        var element = document.getElementById(elementId);
+        if (element) { 
+          element.parentNode.removeChild(element);
+        }
+        var msg = "vrDisplay.isPresenting = " + vrDisplay.isPresenting;
+        var messageElement = document.createElement("div");
+        messageElement.id = elementId;
+        messageElement.innerHTML = msg;
+        VRSamplesUtil.getMessageContainer().appendChild(messageElement);
+
         if (vrDisplay.isPresenting) {
           if (vrDisplay.capabilities.hasExternalDisplay) {
             // Because we're not mirroring any images on an external screen will
