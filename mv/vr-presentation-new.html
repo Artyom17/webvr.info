@@ -132,7 +132,7 @@ found in the LICENSE file.
         ext.framebufferTextureMultiviewOVR(gl.DRAW_FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, depthStencilTex, 0, 0, 2);
         console.log("Fbo attachment numviews = " + gl.getFramebufferAttachmentParameter(gl.DRAW_FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR));
         console.log("Fbo base view index = " + gl.getFramebufferAttachmentParameter(gl.DRAW_FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR));
-        gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, 0);
+        gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
       }
 
       gl.clearColor(0.1, 0.2, 0.3, 1.0);
