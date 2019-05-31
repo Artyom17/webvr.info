@@ -115,8 +115,8 @@ window.VRStereoUtil = (function () {
     source_rect_uv_height,
     dest_surface_width,
     dest_surface_height) {
-    var gl = this.gl;
-    var program = this.program;
+    let gl = this.gl;
+    let program = this.program;
 
     gl.activeTexture(gl.TEXTURE0);  
     gl.bindTexture(gl.TEXTURE_2D_ARRAY, source_texture);  
@@ -140,11 +140,11 @@ window.VRStereoUtil = (function () {
     gl.disable(gl.SCISSOR_TEST);
     gl.disable(gl.DEPTH_TEST);
     gl.disable(gl.STENCIL_TEST);
-    gl.disable(gl.CULL_FACE);
+//    gl.disable(gl.CULL_FACE);
     gl.colorMask(true, true, true, true);
     gl.depthMask(false);
-    gl.disable(gl.BLEND);
-    gl.disable(gl.DITHER);
+//    gl.disable(gl.BLEND);
+//    gl.disable(gl.DITHER);
 
     gl.viewport(0, 0, dest_surface_width, dest_surface_height);
 
@@ -157,6 +157,7 @@ window.VRStereoUtil = (function () {
     gl.drawArrays(gl.TRIANGLES, 0, 12);
 
     gl.enable(gl.DEPTH_TEST);
+    gl.depthMask(true);
 };
 
   return StereoUtil;
