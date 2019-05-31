@@ -75,6 +75,7 @@ found in the LICENSE file.
     <script src="js/third-party/wglu/wglu-texture.js"></script>
 
     <script src="js/vr-cube-sea.js"></script>
+    <script src="js/stereo-util.js"></script>
     <script src="js/vr-samples-util.js"></script>
   </head>
   <body>
@@ -122,6 +123,7 @@ found in the LICENSE file.
       var fbo = null;
       var leftEye;
       var rightEye;
+      var backFbo = gl.getParameter(gl.FRAMEBUFFER_BINDING);
 
       gl.clearColor(0.1, 0.2, 0.3, 1.0);
       gl.enable(gl.DEPTH_TEST);
@@ -130,10 +132,12 @@ found in the LICENSE file.
       var textureLoader = new WGLUTextureLoader(gl);
       var texture = textureLoader.loadTexture("media/textures/cube-sea.png");
       var cubeSea = new VRCubeSea(gl, texture);
+      var stereoUtil = new VRStereoUtil(gl);
 
       var stats = new WGLUStats(gl);
 
       var presentingMessage = document.getElementById("presenting-message");
+      var colorTexture;
 
       // ================================
       // WebVR-specific code begins here.
@@ -263,8 +267,8 @@ found in the LICENSE file.
             console.log("MaxViews = " + gl.getParameter(ext.MAX_VIEWS_OVR));
             fbo = gl.createFramebuffer();
             gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fbo);
-            var colorTex = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D_ARRAY, colorTex);
+            colorTexture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D_ARRAY, colorTexture);
             gl.texStorage3D(gl.TEXTURE_2D_ARRAY, 1, gl.RGBA8, width, height, 2);
             ext.framebufferTextureMultiviewOVR(gl.DRAW_FRAMEBUFFER, gl.COLOR_ATTACHMENT0, colorTex, 0, 0, 2);
             console.log("Fbo attachment numviews = " + gl.getFramebufferAttachmentParameter(gl.DRAW_FRAMEBUFFER, gl.COLOR_ATTACHMENT0, ext.FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR));
@@ -325,8 +329,15 @@ found in the LICENSE file.
                 let height = Math.max(leftEye.renderHeight, rightEye.renderHeight);
                 gl.viewport(0, 0, width, height);
                 gl.scissor(0, 0, width, height);
+                gl.clearColor(1.0, 0, 0, 1.0);
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
                 cubeSea.render(projections, viewMats, stats, /*multiview*/ true);
+                gl.invalidateFramebuffer(gl.DRAW_FRAMEBUFFER, [ gl.DEPTH_STENCIL_ATTACHMENT ]);
+                gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, backFbo);
+                gl.clearColor(0, 1.0, 0, 1.0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                stereoUtil.blit(true, colorTexture, 0, 0, 1, 1, width*2, height);
+
               } else {
                 let viewport = views[0].getViewport();
                 gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
