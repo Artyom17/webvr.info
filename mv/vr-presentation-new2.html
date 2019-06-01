@@ -297,10 +297,10 @@ found in the LICENSE file.
       function onAnimationFrame (t) {
         stats.begin();
 
-        gl.disable(gl.SCISSOR_TEST);
         gl.clearColor(0.1, 0.2, 0.3, 1.0);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
- 
+        gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.CULL_FACE);
+
         if (vrDisplay) {
           // When presenting content to the VRDisplay we want to update at its
           // refresh rate if it differs from the refresh rate of the main
@@ -334,7 +334,7 @@ found in the LICENSE file.
                 gl.viewport(0, 0, width, height);
                 gl.scissor(0, 0, width, height);
                 //gl.clearColor(1.0, 0, 0, 1.0);
-                //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
                 cubeSea.render(projections, viewMats, stats, /*multiview*/ true);
                 gl.invalidateFramebuffer(gl.DRAW_FRAMEBUFFER, [ gl.DEPTH_STENCIL_ATTACHMENT ]);
                 
