@@ -118,7 +118,7 @@ window.VRSamplesUtil = (function () {
     buttonElement.align = "center";
 
     if (icon) {
-      buttonElement.innerHTML = "<img src='" + icon + "'/><br/>" + message;
+      buttonElement.innerHTML = "<img id='" + message.replace(/ /g,"_") + "' src='" + icon + "'/><br/>" + message;
     } else {
       buttonElement.innerHTML = message;
     }
