@@ -159,17 +159,41 @@ window.VRPanorama = (function () {
         reject(video.error);
       }, false);
 
+      // Videos must be muted to play without a user gesture.
+      video.muted = true;
+
+      // These lines are required to play the video on iOS.
+      video.setAttribute("playsinline", "");
+      // This is for iOS 8 and 9 only, above line required for 10+.
+      video.setAttribute("webkit-playsinline", "");
+
       video.loop = true;
-      video.autoplay = true;
       video.crossOrigin = 'anonymous';
-      video.setAttribute('webkit-playsinline', '');
       video.src = url;
+
+      // As the video is never visible on the page, we must explicitly
+      // call play to start the video instead of being able to use
+      // autoplay attributes.
+      playVideo(video);
     });
   };
 
+  // Start the video. If the video fails to start, alert the user.
   Panorama.prototype.play = function() {
     if (this.videoElement)
-      this.videoElement.play();
+      playVideo(this.videoElement);
+  };
+
+  function playVideo(video) {
+    let promise = video.play();
+    if(promise) {
+      promise.catch((err) => {
+        console.error(err);
+        VRSamplesUtil.addError("Video has failed to start", 3000)
+      });
+    } else {
+      console.error("videoElement.play does not support promise api");
+    }
   };
 
   Panorama.prototype.pause = function() {
@@ -183,7 +207,26 @@ window.VRPanorama = (function () {
     return false;
   };
 
-  Panorama.prototype.render = function (projectionMat, modelViewMat) {
+  Panorama.prototype.preloadTexture = function (is_webgl2) {
+    if (!this.imgElement && !this.videoElement)
+      return;
+
+    var gl = this.gl;
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
+    if (this.videoElement && !this.videoElement.paused) {
+      if (is_webgl2) {
+        // use gl.COLOR_ATTACHMENT0 and gl.DEPTH_ATTACHMENT if non-default framebuffer is used.
+        gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.COLOR, gl.DEPTH ]);
+      }
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.videoElement);
+      // Clear supposed to happen after preloadTexture call
+      //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    }
+  }
+
+  Panorama.prototype.render = function (projectionMat, modelViewMat, is_preloaded) {
     var gl = this.gl;
     var program = this.program;
 
@@ -208,7 +251,7 @@ window.VRPanorama = (function () {
     gl.uniform1i(this.program.uniform.diffuse, 0);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
-    if (this.videoElement && !this.videoElement.paused) {
+    if (!is_preloaded && this.videoElement && !this.videoElement.paused) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.videoElement);
     }
 
