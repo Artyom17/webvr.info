@@ -141,6 +141,27 @@ found in the LICENSE file.
       // ================================
       // WebVR-specific code begins here.
       // ================================
+      function updateStage() {
+        if (vrDisplay) {
+          if (vrDisplay.stageParameters &&
+              vrDisplay.stageParameters.sizeX > 0 &&
+              vrDisplay.stageParameters.sizeZ > 0) {
+            // If we have stageParameters with a valid size use that to resize
+            // our scene to match the users available space more closely. The
+            // check for size > 0 is necessary because some devices, like the
+            // Oculus Rift, can give you a standing space coordinate but don't
+            // have a configured play area. These devices will return a stage
+            // size of 0.
+            cubeIsland.resize(vrDisplay.stageParameters.sizeX, vrDisplay.stageParameters.sizeZ);
+          } else {
+            if (vrDisplay.stageParameters) {
+              VRSamplesUtil.addInfo("VRDisplay reported stageParameters, but stage size was 0. Using default size.", 3000);
+            } else {
+              VRSamplesUtil.addInfo("VRDisplay did not report stageParameters", 3000);
+            }
+          }
+        }
+      }
 
       function onVRRequestPresent () {
         vrDisplay.requestPresent([{ source: webglCanvas }]).then(function () {
@@ -177,6 +198,7 @@ found in the LICENSE file.
             vrPresentButton = VRSamplesUtil.addButton("Enter VR", "E", "media/icons/cardboard64.png", onVRRequestPresent);
           }
         }
+        updateStage();
       }
 
       if (navigator.getVRDisplays) {
@@ -190,23 +212,7 @@ found in the LICENSE file.
 
             initWebGL(vrDisplay.capabilities.hasExternalDisplay);
 
-            if (vrDisplay.stageParameters &&
-                vrDisplay.stageParameters.sizeX > 0 &&
-                vrDisplay.stageParameters.sizeZ > 0) {
-              // If we have stageParameters with a valid size use that to resize
-              // our scene to match the users available space more closely. The
-              // check for size > 0 is necessary because some devices, like the
-              // Oculus Rift, can give you a standing space coordinate but don't
-              // have a configured play area. These devices will return a stage
-              // size of 0.
-              cubeIsland.resize(vrDisplay.stageParameters.sizeX, vrDisplay.stageParameters.sizeZ);
-            } else {
-              if (vrDisplay.stageParameters) {
-                VRSamplesUtil.addInfo("VRDisplay reported stageParameters, but stage size was 0. Using default size.", 3000);
-              } else {
-                VRSamplesUtil.addInfo("VRDisplay did not report stageParameters", 3000);
-              }
-            }
+            updateStage();
 
             VRSamplesUtil.addButton("Reset Pose", "R", null, function () { vrDisplay.resetPose(); });
 

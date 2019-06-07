@@ -139,16 +139,22 @@ found in the LICENSE file.
       // ================================
 
       function onVRRequestPresent () {
+        console.log("onVRRequestPresent begin");
         // This can only be called in response to a user gesture.
         vrDisplay.requestPresent([{ source: webglCanvas }]).then(function () {
           // Nothing to do because we're handling things in onVRPresentChange.
+          console.log("highRefreshRate = " + vrDisplay.getLayers()[0].attributes.highRefreshRate);
+          console.log("foveationLevel = " + vrDisplay.getLayers()[0].attributes.foveationLevel);
+          console.log("floorLevel = " + vrDisplay.getLayers()[0].attributes.floorLevelTransform);
         }, function (err) {
           var errMsg = "requestPresent failed.";
           if (err && err.message) {
             errMsg += "<br/>" + err.message
           }
           VRSamplesUtil.addError(errMsg, 2000);
+          console.log("onVRRequestPresent: errMsg");
         });
+        console.log("onVRRequestPresent end");
       }
 
       function onVRExitPresent () {
@@ -170,6 +176,7 @@ found in the LICENSE file.
       }
 
       function onVRPresentChange () {
+        console.log("onVRPresentChange begin");
         // When we begin or end presenting, the canvas should be resized to the
         // recommended dimensions for the display.
         onResize();
@@ -196,6 +203,7 @@ found in the LICENSE file.
             vrPresentButton = VRSamplesUtil.addButton("Enter VR", "E", "media/icons/cardboard64.png", onVRRequestPresent);
           }
         }
+        console.log("onVRPresentChange end");
       }
 
       if (navigator.getVRDisplays) {
@@ -281,6 +289,7 @@ found in the LICENSE file.
             Math.random() * 0.5,
             Math.random() * 0.5,
             Math.random() * 0.5, 1.0);
+        window.requestAnimationFrame(onAnimationFrame);
       }
       webglCanvas.addEventListener("click", onClick, false);
 
@@ -325,6 +334,7 @@ found in the LICENSE file.
             stats.renderOrtho();
           }
         } else {
+          console.log("vrDisplay = " + vrDisplay);
           window.requestAnimationFrame(onAnimationFrame);
 
           // No VRDisplay found.
