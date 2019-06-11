@@ -92,7 +92,7 @@
         <br/>
         <hr/>
 
-        <h3><a class="github-link" href="https://github.com/toji/webvr.info/blob/master/samples">View samples on GitHub</a></h3>
+        <h3><a class="github-link" href="https://github.com/artyom17/webvr.info/blob/gh-pages/samples">View samples on GitHub</a></h3>
 
         <script>
           var pages = [
@@ -100,24 +100,56 @@
             { index: "01", path: "01-vr-input.html", title: "VR Input", nonPresenting: true },
             { index: "02", path: "02-stereo-rendering.html", title: "Stereo Rendering", nonPresenting: true },
             { index: "03", path: "03-vr-presentation.html", title: "VR Presentation" },
+            { index: "03r", path: "03-vr-presentation-72Hz.html", title: "VR Presentation, 72Hz" },
+            { index: "03f", path: "03-vr-presentation-fovea.html", title: "VR Presentation, LMS" },
+            { index: "03g", path: "03-vr-presentation-fovea-cac.html", title: "VR Presentation, LMS + CAC" },
+            { index: "03l", path: "03-vr-presentation-floor.html", title: "VR Presentation, Floor Origin" },
+            { index: "03o", path: "03-vr-presentation-webvr10.html", title: "VR Presentation, WebVR 1.0" },
+            { index: "03a", path: "03a-window-animation.html", title: "Window animation" },
+            { index: "03b", path: "03b-vr-navigation.html", title: "VR navigation" },
+            { index: "03d", path: "03-vr-presentation-dbl-submit.html", title: "Double submitFrame" },
             { index: "04", path: "04-simple-mirroring.html", title: "Simple Mirroring" },
             { index: "04b", path: "04b-simple-mirroring-2.html", title: "Simple Mirroring pt. 2" },
             { index: "05", path: "05-room-scale.html", title: "Room Scale" },
             { index: "06", path: "06-vr-audio.html", title: "VR Audio" },
             { index: "07", path: "07-advanced-mirroring.html", title: "Advanced Mirroring" },
             { index: "08", path: "08-dynamic-resolution.html", title: "Dynamic Resolution" },
+            { index: "08b", path: "08b-dynamic-resolution-2.html", title: "Dynamic Resolution 2" },
+            { index: "08c", path: "08c-dynamic-resolution-3.html", title: "Dynamic Resolution 3" },
+            { index: "08d", path: "08d-dynamic-resolution-4.html", title: "Dynamic Resolution 4" },
+            { index: "08e", path: "08e-dynamic-resolution.html", title: "Resizing canvas" },
 
             // WIP samples, no index
             { path: "XX-360-panorama.html", title: "360 Degree Panorama" },
+            { path: "XX-360-video.html", title: "360 Degree Video" },
             { path: "XX-vr-controllers.html", title: "VR Controllers" },
+            { path: "XX-gamepads.html", title: "Gamepads (ALL)" },
 
             // Tests
             { index: "Test", path: "test-canvas-attributes.html", title: "Canvas Attributes" },
             { index: "Test", path: "test-slow-render.html?heavyGpu=1", title: "Slow GPU" },
             { index: "Test", path: "test-slow-render.html?workTime=48", title: "Slow Javascript" },
             { index: "Test", path: "test-slow-render.html?heavyGpu=1&workTime=48", title: "Slow GPU and Javascript" },
+            { index: "Test", path: "test-slow-render-alpha-cma.html?heavyGpu=1", title: "Slow GPU RT RGBA - CM RGBA" },
+            { index: "Test", path: "test-slow-render-alpha-cmna.html?heavyGpu=1", title: "Slow GPU RT RGBA - CM RGB" },
+            { index: "Test", path: "test-slow-render-noalpha-cma.html?heavyGpu=1", title: "Slow GPU RT RGB - CM RGBA" },
+            { index: "Test", path: "test-slow-render-noalpha-cmna.html?heavyGpu=1", title: "Slow GPU RT RGB - CM RGB" },
             { index: "Test", path: "03-vr-presentation.html?webgl2=1", title: "WebGL 2" },
             { index: "Test", path: "test-vr-links.html", title: "VR Links" },
+            { index: "Test", path: "test-permissions-in-vr.html", title: "VR Permissions" },
+            { index: "Test", path: "test-leavevr.html", title: "Leave VR" },
+            { index: "Test", path: "test-history-pushState.html", title: "History.pushState navigation" },
+            { index: "Test", path: "test-history-stopBack.html", title: "Stop-back navigation" },
+            { index: "Test", path: "AutoVideoPlay.html", title: "Auto Video play in WebVR" },
+            { index: "Test", path: "WebGL2-instancing-cubes.html", title: "WebGL 2 instancing cubes" },
+            { index: "Test", path: "FoveationVisualTest.html", title: "FoveationVisualTest" },
+            { index: "Test", path: "FoveationVisualTest-dynamic-res.html", title: "FoveationVisualTest Dynamic Res" },
+            { index: "Test", path: "test-preserveDrawingBuffer.html", title: "preserveDrawingBuffer testing" },
+            { index: "Test", path: "test-window-open-in-vr.html", title: "Test window.open in VR" },
+            { index: "Test", path: "test-framedata-after-submit.html", title: "Test getFrameData after submitFrame" },
+            { index: "Test", path: "test-raf-stops.html ", title: "Test rAF stops after 5 sec" },
+            { index: "Test", path: "test-vr-presentation-alt-eye-buf.html", title: "Test alternatively sized eye buffers" },
+            { index: "Test", path: "xxx-to-blob.html", title: "Test perf of Canvas.toBlob" },
           ];
 
           // Append an element for every item in the pages list.

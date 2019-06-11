@@ -94,6 +94,8 @@ found in the LICENSE file.
 
       var PLAYER_HEIGHT = 1.65;
 
+      var button_pressed = new Array(10);
+
       var vrDisplay = null;
       var frameData = null;
       var projectionMat = mat4.create();
@@ -145,6 +147,7 @@ found in the LICENSE file.
       // ================================
 
       function onVRRequestPresent () {
+        console.log("onVRRequestPresent");
         // This can only be called in response to a user gesture.
         vrDisplay.requestPresent([{ source: webglCanvas }]).then(function () {
           // Nothing to do because we're handling things in onVRPresentChange.
@@ -158,6 +161,7 @@ found in the LICENSE file.
       }
 
       function onVRExitPresent () {
+        console.log("onVRExitPresent");
         if (!vrDisplay.isPresenting)
           return;
 
@@ -173,6 +177,7 @@ found in the LICENSE file.
       }
 
       function onVRPresentChange () {
+        console.log("onVRPresentChange");
         onResize();
 
         if (vrDisplay.isPresenting) {
@@ -245,9 +250,15 @@ found in the LICENSE file.
 
       var leftIntersect = false;
       var rightIntersect = false;
+      var topIntersect = false;
+      var bottomIntersect = false;
 
+      var playerPosition = [0, PLAYER_HEIGHT, 0];
       var leftPosition = [-0.5, PLAYER_HEIGHT, -1.0];
       var rightPosition = [0.5, PLAYER_HEIGHT, -1.0];
+      var topPosition = [0.0, PLAYER_HEIGHT + 0.7, -1.0];
+      var bottomPosition = [0.0, PLAYER_HEIGHT - 0.7, -1.0];
+      var frontPosition = [0.0, PLAYER_HEIGHT, -1.0];
 
       function onClick () {
         console.log("onClick");
@@ -258,6 +269,11 @@ found in the LICENSE file.
         } else if (rightIntersect) {
           // Navigate to a 2D site
           window.location = "index.html"
+        } else if (topIntersect) {
+          window.location = "03-vr-presentation.html";
+        } else
+        if (bottomIntersect) {
+          onVRExitPresent();
         } else {
           // Reset the background color to a random value
           gl.clearColor(
@@ -304,17 +320,46 @@ found in the LICENSE file.
         } else {
           debugGeom.drawCube(0, rightPosition, 0.3, [0, 1, 0, 1]);
         }
+
+        if (topIntersect) {
+          debugGeom.drawCube(0, topPosition, 0.35, [0.5, 0.5, 1, 1]);
+        } else {
+          debugGeom.drawCube(0, topPosition, 0.3, [0, 0.5, 1, 1]);
+        } 
+
+        if (bottomIntersect) {
+          debugGeom.drawCube(0, bottomPosition, 0.35, [1, 0.5, 0, 1]);
+        } else {
+          debugGeom.drawCube(0, bottomPosition, 0.3, [1, 0, 0, 1]);
+        }
+
       }
 
       function lookingAtSphere(position, radius, pose) {
-        var lookVec = [0, 0, -1];
+        if (!pose || !pose.orientation) 
+           return false;
+        var lookVec = vec3.fromValues(0, 0, -1);
         vec3.transformQuat(lookVec, lookVec, pose.orientation);
+
+        var m = vec3.create();
+        vec3.sub(m, playerPosition, position); 
+        var b = vec3.dot(m, lookVec); 
+        var c = vec3.dot(m, m) - radius * radius; 
+
+        // Exit if r’s origin outside s (c > 0) and r pointing away from s (b > 0) 
+        if (c > 0.0 && b > 0.0) return false; 
+        var discr = b*b - c; 
+
+        // A negative discriminant corresponds to ray missing sphere 
+        if (discr < 0.0) return false; 
+        return true;
+                 /*
         // TODO: Proper ray intersection
         if (position[0] < 0 && lookVec[0] < -0.2 && lookVec[0] > -0.6)
           return true;
         if (position[0] > 0 && lookVec[0] > 0.2 && lookVec[0] < 0.6)
           return true;
-        return false;
+        return false;*/
       }
 
       function onAnimationFrame (t) {
@@ -331,16 +376,22 @@ found in the LICENSE file.
             // The array may contain undefined gamepads, so check for that as
             // well as a non-null pose.
             if (gamepad) {
+console.log("gamepad! buttons = "+gamepad.buttons.length);
               if (gamepad.pose)
                 vrGamepads.push(gamepad);
 
                 for (var j = 0; j < gamepad.buttons.length; ++j) {
                   if (gamepad.buttons[j].pressed) {
-                    console.log("Button " + j + " pressed");
-					onClick();
-                    break;
+                    if (!button_pressed[j]) {
+                      console.log("Button " + j + " pressed");
+                      button_pressed[j] = true;
+                      onClick();
+                    }
                   }
-                }
+                  else {
+                    button_pressed[j] = false;
+                  }
+               }
             }
           }
 
@@ -348,10 +399,37 @@ found in the LICENSE file.
         if (vrDisplay) {
           vrDisplay.requestAnimationFrame(onAnimationFrame);
 
+          // Loop over every gamepad and if we find any that have a pose use it.
+          var vrGamepads = [];
+
+          var gamepads = navigator.getGamepads();
+          for (var i = 0; i < gamepads.length; ++i) {
+            var gamepad = gamepads[i];
+            // The array may contain undefined gamepads, so check for that as
+            // well as a non-null pose.
+            if (gamepad) {
+              if (gamepad.pose)
+                vrGamepads.push(gamepad);
+
+              if ("hapticActuators" in gamepad && gamepad.hapticActuators.length > 0) {
+                for (var j = 0; j < gamepad.buttons.length; ++j) {
+                  if (gamepad.buttons[j].pressed) {
+                    // Vibrate the gamepad using to the value of the button as
+                    // the vibration intensity.
+                    gamepad.hapticActuators[0].pulse(gamepad.buttons[j].value, 100);
+                    break;
+                  }
+                }
+              }
+            }
+          }
+
           vrDisplay.getFrameData(frameData);
 
           leftIntersect = lookingAtSphere(leftPosition, 0.35, frameData.pose);
           rightIntersect = lookingAtSphere(rightPosition, 0.35, frameData.pose);
+          topIntersect = lookingAtSphere(topPosition, 0.35, frameData.pose);
+          bottomIntersect = lookingAtSphere(bottomPosition, 0.35, frameData.pose);
 
           if (vrDisplay.isPresenting) {
             gl.viewport(0, 0, webglCanvas.width * 0.5, webglCanvas.height);
@@ -371,6 +449,7 @@ found in the LICENSE file.
             stats.renderOrtho();
           }
         } else {
+          topIntersect = lookingAtSphere(frontPosition, 0.35, { "orientation":quat.create() });
           window.requestAnimationFrame(onAnimationFrame);
 
           // No VRDisplay found.
