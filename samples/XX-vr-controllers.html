@@ -335,7 +335,7 @@ found in the LICENSE file.
             // Loop through all the gamepad's axes and scale the gamepad geometry
             // by their value.
             if (gamepad.axes.length == 2 && gamepad.axes[0] != 0 && gamepad.axes[1] != 0) {
-              console.log("Axis x: " + gamepad.axes[0] + ", y: " + gamepad.axes[1]);
+              //console.log("Axis x: " + gamepad.axes[0] + ", y: " + gamepad.axes[1]);
             } 
             var scale = [0.1, 0.1, 0.1];
             for (var j = 0; j < gamepad.axes.length; ++j) {
@@ -367,7 +367,7 @@ found in the LICENSE file.
               if (gamepad.buttons[j].touched) {
                 touched = 1;
                 if (j == 0) {
-                  console.log("touchpad touched!");
+                  //console.log("touchpad touched!");
                   vec4.set(gamepadColor, 0, touched, 1, 1);
                 }
               }
@@ -383,18 +383,17 @@ found in the LICENSE file.
                 vec4.set(gamepadColor, gamepad.buttons[j].value, touched, gamepad.buttons[j].pressed, 1);
               }
             }
+            debugGeom.drawConeWithMatrix(gamepadMat, gamepadColor);
+            // Draw a "handle" for the gamepad
+            mat4.identity(gamepadMat2);
+            mat4.translate(gamepadMat2, gamepadMat2, [0, -0.5, -0.3]);
+            mat4.rotateX(gamepadMat2, gamepadMat2, -Math.PI * 0.2);
+            mat4.scale(gamepadMat2, gamepadMat2, [0.25, 0.25, 0.5]);
+
+            mat4.multiply(gamepadMat, gamepadMat, gamepadMat2);
+
+            debugGeom.drawBoxWithMatrix(gamepadMat, gamepadColor);
           }
-          debugGeom.drawConeWithMatrix(gamepadMat, gamepadColor);
-
-          // Draw a "handle" for the gamepad
-          mat4.identity(gamepadMat2);
-          mat4.translate(gamepadMat2, gamepadMat2, [0, -0.5, -0.3]);
-          mat4.rotateX(gamepadMat2, gamepadMat2, -Math.PI * 0.2);
-          mat4.scale(gamepadMat2, gamepadMat2, [0.25, 0.25, 0.5]);
-
-          mat4.multiply(gamepadMat, gamepadMat, gamepadMat2);
-
-          debugGeom.drawBoxWithMatrix(gamepadMat, gamepadColor);
         }
         previousNumOfGamepads = gamepads.length;
         if (vrDisplay.isPresenting && !controller_found) {
