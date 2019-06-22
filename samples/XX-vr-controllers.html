@@ -250,10 +250,13 @@ found in the LICENSE file.
           let gamepad = gamepads[i];
           if (gamepad != null) {
             console.log("Found controller: '" + gamepad.id + "', connected = "+ gamepad.connected);
+            if (gamepad.id == "Gear VR Touchpad" || gamepad.id == "Gear VR Controller" || gamepad.id == "Oculus Go Controller" || gamepad.id == "Oculus Monterey Controller") {
+               controller_found = true;
+            }
           }
-          if (gamepad.id == "Gear VR Touchpad" || gamepad.id == "Gear VR Controller" || gamepad.id == "Oculus Go Controller" || gamepad.id == "Oculus Monterey Controller") {
-             controller_found = true;
-          }
+        }
+        if (!controller_found) {
+          console.log("no controllers found");
         }
       }
 
