@@ -244,9 +244,10 @@ found in the LICENSE file.
 
       function onGamepadChange() {
         console.log("onGamepadChange!!!");
+        let gamepads = navigator.getGamepads();
         controller_found = false;
-        for (var i = 0; i < gamepads.length; ++i) {
-          var gamepad = gamepads[i];
+        for (let i = 0; i < gamepads.length; ++i) {
+          let gamepad = gamepads[i];
           if (gamepad != null) {
             console.log("Found controller: '" + gamepad.id + "', connected = "+ gamepad.connected);
           }
@@ -398,9 +399,9 @@ found in the LICENSE file.
           vrDisplay.requestAnimationFrame(onAnimationFrame);
 
           // Loop over every gamepad and if we find any that have a pose use it.
-          var vrGamepads = [];
+          let vrGamepads = [];
 
-          var gamepads = navigator.getGamepads();
+          let gamepads = navigator.getGamepads();
           for (var i = 0; i < gamepads.length; ++i) {
             var gamepad = gamepads[i];
             // The array may contain undefined gamepads, so check for that as
