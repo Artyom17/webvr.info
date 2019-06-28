@@ -348,16 +348,14 @@ found in the LICENSE file.
               stereoUtil.blit(true, colorTexture, 0, 0, 1, 1, width*2, height);
 
             } else {
-              let viewport = views[0].getViewport();
-              gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-              gl.scissor(viewport.x, viewport.y, viewport.width, viewport.height);
+              gl.disable(gl.SCISSOR_TEST);
               gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+              // Note that the viewports use the eyeWidth/height rather than the
+              // canvas width and height.
+              gl.viewport(0, 0, webglCanvas.width * 0.5, webglCanvas.height);
               cubeSea.render(frameData.leftProjectionMatrix, frameData.leftViewMatrix, stats);
 
-              viewport = views[1].getViewport();
-              gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-              gl.scissor(viewport.x, viewport.y, viewport.width, viewport.height);
-              gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+              gl.viewport(webglCanvas.width * 0.5, 0, webglCanvas.width * 0.5, webglCanvas.height);
               cubeSea.render(frameData.rightProjectionMatrix, frameData.rightViewMatrix, stats);
             }
             gl.disable(gl.SCISSOR_TEST);
