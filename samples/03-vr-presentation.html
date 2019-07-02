@@ -141,7 +141,10 @@ found in the LICENSE file.
       function onVRRequestPresent () {
         console.log("onVRRequestPresent begin");
         // This can only be called in response to a user gesture.
-        vrDisplay.requestPresent([{ source: webglCanvas }]).then(function () {
+        var attributes = {
+          highRefreshRate: false,
+        };
+        vrDisplay.requestPresent([{ source: webglCanvas, attributes: attributes}]).then(function () {
           // Nothing to do because we're handling things in onVRPresentChange.
           console.log("highRefreshRate = " + vrDisplay.getLayers()[0].attributes.highRefreshRate);
           console.log("foveationLevel = " + vrDisplay.getLayers()[0].attributes.foveationLevel);
