@@ -674,36 +674,31 @@ console.log(fragmentShaderSource);
       }
 
       var reported = false;
-      var button_pressed = new Array(10);
+      var button_pressed = [new Array(10), new Array(10)];
       function onAnimationFrame (t) {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-          // Loop over every gamepad and if we find any that have a pose use it.
-          var vrGamepads = [];
-
-          var gamepads = navigator.getGamepads();
-          for (var i = 0; i < gamepads.length; ++i) {
-            var gamepad = gamepads[i];
-            // The array may contain undefined gamepads, so check for that as
-            // well as a non-null pose.
-            if (gamepad) {
-              if (gamepad.pose)
-                vrGamepads.push(gamepad);
-
-                for (var j = 0; j < gamepad.buttons.length; ++j) {
-                  if (gamepad.buttons[j].pressed) {
-                    if (!button_pressed[j]) {
-                      console.log("Button " + j + " pressed");
-                      button_pressed[j] = true;
-                      onClick();
-                    }
+        let gamepads = navigator.getGamepads();
+        for (var i = 0; i < gamepads.length; ++i) {
+          let gamepad = gamepads[i];
+          // The array may contain undefined gamepads, so check for that as
+          // well as a non-null pose.
+          if (gamepad) {
+            if (gamepad.pose)
+              for (let j = 0; j < gamepad.buttons.length; ++j) {
+                if (gamepad.buttons[j].pressed) {
+                  if (!button_pressed[i][j]) {
+                    console.log("Gamepad " + i + ", Button " + j + " pressed");
+                    button_pressed[i][j] = true;
+                    onClick();
                   }
-                  else {
-                    button_pressed[j] = false;
-                  }
-               }
-            }
+                }
+                else {
+                  button_pressed[i][j] = false;
+                }
+             }
           }
+        }
 
         if (vrDisplay) {
           window.addEventListener("vrdisplayconnect", eventFired, false);
@@ -729,7 +724,7 @@ console.log(fragmentShaderSource);
           if (vrDisplay.isPresenting) {
             // When presenting render a stereo view.
 
-            var views = vrDisplay.getViews ? vrDisplay.getViews() : [];
+            let views = vrDisplay.getViews ? vrDisplay.getViews() : [];
             //console.log("views: " + vrDisplay.getViews);
             if (views && views.length > 0) {
               if (views[0].getAttributes().multiview) {
@@ -738,14 +733,14 @@ console.log(fragmentShaderSource);
                   console.log("Rendering with multiview!");
                   reported = true;
                 }
-                var view = views[0];
-                var viewport = view.getViewport();
+                let view = views[0];
+                let viewport = view.getViewport();
                 gl.bindFramebuffer(gl.FRAMEBUFFER, view.framebuffer);
                 renderFrame(gl, viewport, frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewport, frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 1);
               }
               else {
                 //renderFrame(gl, viewports[0], frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewports[1], frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 2);
-                var VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
+                let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
                 renderFrame(gl, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, t, 1);
               }
 
@@ -754,7 +749,7 @@ console.log(fragmentShaderSource);
               vrDisplay.submitFrame();
             }
             else {
-                var VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
+                let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
                 renderFrame(gl, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, t, 1);
 
               // If we're currently presenting to the VRDisplay we need to
@@ -765,7 +760,7 @@ console.log(fragmentShaderSource);
             //window.requestAnimationFrame(onAnimationFrame);
             // When not presenting render a mono view that still takes pose into
             // account.
-            var VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
+            let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
             renderFrame(gl, VP, projMatrix, viewMatrix, VP, projMatrix, viewMatrix, t, 1);
 
             reported = false;
@@ -775,7 +770,7 @@ console.log(fragmentShaderSource);
           window.requestAnimationFrame(onAnimationFrame);
 
           // No VRDisplay found.
-          var VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
+          let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
           renderFrame(gl, VP, projMatrix, viewMatrix, VP, projMatrix, viewMatrix, t, 1);
         }
         simulationAdvance(t);
