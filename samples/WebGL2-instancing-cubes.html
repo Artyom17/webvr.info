@@ -531,8 +531,8 @@ found in the LICENSE file.
               vrPresentButton = VRSamplesUtil.addButton("Enter VR", "E", "media/icons/cardboard64.png", onVRRequestPresent);
 
             // For the benefit of automated testing. Safe to ignore.
-            if (vrDisplay.capabilities.canPresent && WGLUUrl.getBool('canvasClickPresents', false))
-              webglCanvas.addEventListener("click", onVRRequestPresent, false);
+            //if (vrDisplay.capabilities.canPresent && WGLUUrl.getBool('canvasClickPresents', false))
+            //  webglCanvas.addEventListener("click", onVRRequestPresent, false);
 
             // The UA may kick us out of VR present mode for any reason, so to
             // ensure we always know when we begin/end presenting we need to
