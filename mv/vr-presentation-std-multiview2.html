@@ -11,7 +11,7 @@ found in the LICENSE file.
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <title>03 - VR Presentation WebGL2</title>
+    <title>03 - VR Presentation WebGL2 OVR_multiview2</title>
 
     <!--
       This sample demonstrates how to present the contents of a WebGL canvas to
@@ -111,11 +111,11 @@ found in the LICENSE file.
       }
       var samples = gl.getParameter(gl.MAX_SAMPLES);
       
-      var is_multiview, is_multisampled = false;
+      var is_multiview = false, is_multisampled = false;
       var ext = gl.getExtension('OVR_multiview2');
       if (ext) {
         console.log("OVR_multiview2 extension is supported");
-        is_multiview = false;
+        is_multiview = true;
       }
       else {
         console.log("OVR_multiview2 extension is NOT supported");
