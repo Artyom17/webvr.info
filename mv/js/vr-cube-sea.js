@@ -22,7 +22,7 @@ window.VRCubeSea = (function () {
 
   var cubeSeaVSMultiview = [
     "#version 300 es",
-    "#extension GL_OVR_multiview : require",
+    "#extension GL_OVR_multiview2 : require",
     "#define NUM_VIEWS 2",
     "layout(num_views=NUM_VIEWS) in;",
     "#define VIEW_ID gl_ViewID_OVR",
