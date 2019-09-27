@@ -624,13 +624,13 @@ found in the LICENSE file.
           //          console.log("vrDisplay.isPresenting = " + vrDisplay.isPresenting + " fov = " + (Math.atan2(1.0, frameData.leftProjectionMatrix[5]) * 360 / Math.PI));
           if (vrDisplay.isPresenting) {
             // When presenting render a stereo view.
-            var leftVP =  { x: 0, y: 0, width:glwidth * 0.5, height:glheight };
+            var leftVP =  { x: 0,             y: 0, width:glwidth * 0.5, height:glheight };
             var rightVP = { x: glwidth * 0.5, y: 0, width:glwidth * 0.5, height:glheight };
 
             //gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
 //            renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
   //                          rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, (multiview) ? 1 : 2);
-            renderFrame(gl, rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, 
+            renderFrame(gl, rightVP, frameData.leftProjectionMatrix, frameData.rightViewMatrix, 
                             leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
                             t, (multiview) ? 1 : 2);
 
