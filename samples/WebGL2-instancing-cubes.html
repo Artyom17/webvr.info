@@ -628,8 +628,11 @@ found in the LICENSE file.
             var rightVP = { x: glwidth * 0.5, y: 0, width:glwidth * 0.5, height:glheight };
 
             //gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
-            renderFrame(gl, leftVP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, 
-                            rightVP, frameData.leftProjectionMatrix, frameData.leftViewMatrix/*frameData.rightProjectionMatrix, frameData.rightViewMatrix*/, t, (multiview) ? 1 : 2);
+//            renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
+  //                          rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, (multiview) ? 1 : 2);
+            renderFrame(gl, rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, 
+                            leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
+                            t, (multiview) ? 1 : 2);
 
             // If we're currently presenting to the VRDisplay we need to
             // explicitly indicate we're done rendering.
