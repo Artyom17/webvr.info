@@ -80,12 +80,12 @@ found in the LICENSE file.
       uniform SceneMatrices
       {
          uniform mat4 ViewMatrix[NUM_VIEWS];
-         uniform mat4 ProjectionMatrix;
+         uniform mat4 ProjectionMatrix[NUM_VIEWS];
       } sm;
       out vec4 fragmentColor;
       void main()
       {
-         gl_Position  = sm.ProjectionMatrix * ( sm.ViewMatrix[VIEW_ID] * ( vertexTransform * vec4( vertexPosition, 1.0 ) ) );
+         gl_Position  = sm.ProjectionMatrix[VIEW_ID] * ( sm.ViewMatrix[VIEW_ID] * ( vertexTransform * vec4( vertexPosition, 1.0 ) ) );
          fragmentColor = vertexColor;
       }`;
 
@@ -628,10 +628,8 @@ found in the LICENSE file.
             var rightVP = { x: glwidth * 0.5, y: 0, width:glwidth * 0.5, height:glheight };
 
             //gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
-//            renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
-  //                          rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, (multiview) ? 1 : 2);
-            renderFrame(gl, rightVP, frameData.leftProjectionMatrix, frameData.rightViewMatrix, 
-                            leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
+            renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
+                            rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix,
                             t, (multiview) ? 1 : 2);
 
             // If we're currently presenting to the VRDisplay we need to
