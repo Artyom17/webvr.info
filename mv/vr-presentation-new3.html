@@ -102,7 +102,9 @@ found in the LICENSE file.
       var webglCanvas = document.getElementById("webgl-canvas");
       var glAttribs = {
         alpha: true,
-        antialias: false
+        antialias: false,
+        depth: false,
+        stencil: false
       };
       var gl = webglCanvas.getContext("webgl2", glAttribs);
       if (!gl) {
