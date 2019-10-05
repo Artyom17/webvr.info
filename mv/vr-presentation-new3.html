@@ -349,7 +349,7 @@ found in the LICENSE file.
               //gl.clearColor(1.0, 0, 0, 1.0);
               gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
               cubeSea.render(projections, viewMats, stats, /*multiview*/ true);
-              gl.invalidateFramebuffer(gl.DRAW_FRAMEBUFFER, [ gl.DEPTH_STENCIL_ATTACHMENT ]);
+              gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.COLOR_ATTACHMENT0, gl.DEPTH_STENCIL_ATTACHMENT ]);
               
               gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, backFbo);
 
@@ -357,6 +357,7 @@ found in the LICENSE file.
               //gl.clearColor(0, 1.0, 0, 1.0);
               //gl.clear(gl.COLOR_BUFFER_BIT);
               stereoUtil.blit(true, colorTexture, 0, 0, 1, 1, width*2, height);
+              gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.DEPTH_STENCIL_ATTACHMENT ]);
 
             } else {
               gl.disable(gl.SCISSOR_TEST);
