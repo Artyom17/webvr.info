@@ -103,6 +103,7 @@ found in the LICENSE file.
       var glAttribs = {
         alpha: true,
         antialias: false,
+        stencil : false,
       };
       var gl = webglCanvas.getContext("webgl2", glAttribs);
       if (!gl) {
@@ -335,7 +336,7 @@ found in the LICENSE file.
           if (vrDisplay.isPresenting) {
 
             gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.DEPTH_STENCIL_ATTACHMENT, gl.COLOR_ATTACHMENT0 ]);
-            gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fbo);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
 
             if (is_multiview) {
               gl.disable(gl.SCISSOR_TEST);
