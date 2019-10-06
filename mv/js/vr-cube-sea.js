@@ -196,8 +196,8 @@ window.VRCubeSea = (function () {
 
   var mvrenReported = false;
   CubeSea.prototype.render = function (projectionMat, modelViewMat, stats, multiview) {
-    var gl = this.gl;
-    var program = this.program;
+    let gl = this.gl;
+    let current_program = this.program;
 
     //mat4.invert(mortimer, modelViewMat);
 
@@ -206,34 +206,34 @@ window.VRCubeSea = (function () {
         console.log("render multiview");
         mvrenReported = true;
       }
-      program = this.program_multiview;
-      program.use();
-      gl.uniformMatrix4fv(program.uniform.leftProjectionMat, false, projectionMat[0]);
-      gl.uniformMatrix4fv(program.uniform.rightProjectionMat, false, projectionMat[1]);
-      gl.uniformMatrix4fv(program.uniform.leftModelViewMat, false, modelViewMat[0]);
-      gl.uniformMatrix4fv(program.uniform.rightModelViewMat, false, modelViewMat[1]);
+      current_program = this.program_multiview;
+      current_program.use();
+      gl.uniformMatrix4fv(current_program.uniform.leftProjectionMat, false, projectionMat[0]);
+      gl.uniformMatrix4fv(current_program.uniform.rightProjectionMat, false, projectionMat[1]);
+      gl.uniformMatrix4fv(current_program.uniform.leftModelViewMat, false, modelViewMat[0]);
+      gl.uniformMatrix4fv(current_program.uniform.rightModelViewMat, false, modelViewMat[1]);
     }
     else {
       mvrenReported = false;
-      program.use();
-      gl.uniformMatrix4fv(program.uniform.projectionMat, false, projectionMat);
-      gl.uniformMatrix4fv(program.uniform.modelViewMat, false, modelViewMat);
+      current_program.use();
+      gl.uniformMatrix4fv(current_program.uniform.projectionMat, false, projectionMat);
+      gl.uniformMatrix4fv(current_program.uniform.modelViewMat, false, modelViewMat);
     }
 
-    gl.uniformMatrix4fv(program.uniform.projectionMat, false, projectionMat);
-    gl.uniformMatrix4fv(program.uniform.modelViewMat, false, modelViewMat);
+    gl.uniformMatrix4fv(current_program.uniform.projectionMat, false, projectionMat);
+    gl.uniformMatrix4fv(current_program.uniform.modelViewMat, false, modelViewMat);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
 
-    gl.enableVertexAttribArray(program.attrib.position);
-    gl.enableVertexAttribArray(program.attrib.texCoord);
+    gl.enableVertexAttribArray(current_program.attrib.position);
+    gl.enableVertexAttribArray(current_program.attrib.texCoord);
 
-    gl.vertexAttribPointer(program.attrib.position, 3, gl.FLOAT, false, 20, 0);
-    gl.vertexAttribPointer(program.attrib.texCoord, 2, gl.FLOAT, false, 20, 12);
+    gl.vertexAttribPointer(current_program.attrib.position, 3, gl.FLOAT, false, 20, 0);
+    gl.vertexAttribPointer(current_program.attrib.texCoord, 2, gl.FLOAT, false, 20, 12);
 
     gl.activeTexture(gl.TEXTURE0);
-    gl.uniform1i(program.uniform.diffuse, 0);
+    gl.uniform1i(current_program.uniform.diffuse, 0);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
     gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_SHORT, 0);
