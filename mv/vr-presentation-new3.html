@@ -358,7 +358,7 @@ found in the LICENSE file.
               gl.clearColor(0, 0, 0, 0);
               gl.clear(gl.COLOR_BUFFER_BIT);
               stereoUtil.blit(true, colorTexture, 0, 0, 1, 1, width*2, height);
-              gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.DEPTH_ATTACHMENT ]);
+              //gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.DEPTH_ATTACHMENT ]);
 
             } else {
               gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, backFbo);
