@@ -349,7 +349,7 @@ found in the LICENSE file.
               //gl.scissor(0, 0, width, height);
               //gl.clearColor(1.0, 0, 0, 1.0);
               gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-              cubeSea.render(projections, viewMats, stats, /*multiview*/ true);
+              //cubeSea.render(projections, viewMats, stats, /*multiview*/ true);
               gl.invalidateFramebuffer(gl.FRAMEBUFFER, [ gl.DEPTH_STENCIL_ATTACHMENT, gl.DEPTH_ATTACHMENT ]);
               
               gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, backFbo);
