@@ -403,6 +403,8 @@ found in the LICENSE file.
         }
       }
 
+      var now = (window.performance && performance.now) ? performance.now.bind(performance) : Date.now;
+      
       function onAnimationFrame (t) {
         stats.begin();
 
