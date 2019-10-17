@@ -86,6 +86,8 @@ found in the LICENSE file.
       var controller_found = false;
 
       var simulatedWorkTimeMs = WGLUUrl.getFloat('workTime', 12);
+      var hickupFrames = WGLUUrl.getFloat('hickupFrames', 80);
+      var hickupFramesCnt = 0;
 
       var vrDisplay = null;
       var frameData = null;
@@ -405,6 +407,19 @@ found in the LICENSE file.
 
       var now = (window.performance && performance.now) ? performance.now.bind(performance) : Date.now;
       
+      // Simulate a heavy Javascript workload
+      function simWork() {
+        let start = now();
+        let projectionMat1 = mat4.create();
+        mat4.perspective(projectionMat1, Math.PI*0.4, webglCanvas.width / webglCanvas.height, 0.1, 1024.0);
+        while (now() - start < simulatedWorkTimeMs) {
+          // Spin our wheels doing useless BS :)
+          mat4.invert(projectionMat1, projectionMat1);
+          mat4.translate(projectionMat1, projectionMat1, [1.0, 1.0, 1.0]);
+        }
+        console.log("Hickup " +projectionMat1);
+      }
+
       function onAnimationFrame (t) {
         stats.begin();
 
@@ -431,17 +446,7 @@ found in the LICENSE file.
                     // Vibrate the gamepad using to the value of the button as
                     // the vibration intensity, normalized to 0.0..1.0 range.
                     //gamepad.hapticActuators[0].pulse((j + 1.0) / (gamepad.buttons.length + 1), 1000);
-                              // Simulate a heavy Javascript workload
-                    let start = now();
-                    let projectionMat1 = mat4.create();
-                    mat4.perspective(projectionMat1, Math.PI*0.4, webglCanvas.width / webglCanvas.height, 0.1, 1024.0);
-                    while (now() - start < simulatedWorkTimeMs) {
-                      // Spin our wheels doing useless BS :)
-                      mat4.invert(projectionMat1, projectionMat1);
-                      mat4.translate(projectionMat1, projectionMat1, [1.0, 1.0, 1.0]);
-                    }
-                    console.log("Hickup " +projectionMat1);
-
+                    hickupFramesCnt = 0;
                     break;
                   }
                 }
@@ -461,6 +466,11 @@ found in the LICENSE file.
             renderSceneView(frameData.rightProjectionMatrix, viewMat, vrGamepads);
 
             vrDisplay.submitFrame();
+
+            if (hickupFramesCnt < hickupFrames) {
+              simWork();
+              ++hickupFramesCnt;
+            }
           } else {
             gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
             mat4.perspective(projectionMat, Math.PI*0.4, webglCanvas.width / webglCanvas.height, 0.1, 1024.0);
