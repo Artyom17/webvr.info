@@ -111,15 +111,25 @@ found in the LICENSE file.
           return;
         }
       }
-      var ext = gl.getExtension('WEBGL_multiview');
-      if (ext) 
-        console.log("MULTIVIEW extension is supported");
+
+      var is_multiview, is_multisampled = false;
+      var ext = gl.getExtension('OCULUS_multiview');
+      if (ext) {
+        console.log("OCULUS_multiview extension is supported");
+        is_multiview = true;
+        is_multisampled = true;
+      }
       else {
-        ext = gl.getExtension('OVR_multiview');
-        if (ext) 
-          console.log("OVR MULTIVIEW extension is supported");
-        else
-          console.log("MULTIVIEW extension is NOT supported");
+        console.log("OCULUS_multiview extension is NOT supported");
+        ext = gl.getExtension('OVR_multiview2');
+        if (ext) {
+          console.log("OVR_multiview2 extension is supported");
+          is_multiview = true;
+        }
+        else {
+          console.log("Neither OCULUS_multiview nor OVR_multiview2 extension is NOT supported");
+          is_multiview = false;
+        }
       }
 
       gl.clearColor(0.1, 0.2, 0.3, 1.0);
