@@ -105,7 +105,7 @@ found in the LICENSE file.
       // WebGL setup.
       var webglCanvas = document.getElementById("webgl-canvas");
       var glAttribs = {
-        alpha: false,
+        //alpha: false,
       };
       var useWebgl2 = WGLUUrl.getBool('webgl2', false);
       var contextTypes = useWebgl2 ? ["webgl2"] : ["webgl", "experimental-webgl"];
@@ -120,6 +120,7 @@ found in the LICENSE file.
         VRSamplesUtil.addError("Your browser does not support " + webglType + ".");
         return;
       }
+      console.log("alpha = " +gl.getContextAttributes().alpha);
       gl.clearColor(0.1, 0.2, 0.3, 1.0);
       gl.enable(gl.DEPTH_TEST);
       gl.enable(gl.CULL_FACE);
