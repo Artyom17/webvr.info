@@ -102,28 +102,28 @@ found in the LICENSE file.
       var fragmentShaderSource =
         "#version 300 es\n" +
         "out lowp vec4 outColor;\n"+
-	"void main()\n"+
-	"{\n"+
+        "void main()\n"+
+        "{\n"+
 
-    "   highp vec2 dx = dFdx(gl_FragCoord.xy), dy = dFdy(gl_FragCoord.xy);\n"+
-    "   highp float levelX = floor(0.5*log2(dot(dx, dx)));\n"+
-    "   highp float levelY = floor(0.5*log2(dot(dy, dy)));\n" +
-    "   lowp vec4 color = vec4(0.0, 0.0, 0.0, 1.0);\n"+
-    "   if ((levelX == 0.0) && (levelY == 0.0)) {\n"+
-    "       color = vec4(1.0, 1.0, 1.0, 1.0);\n"+               //  1:1 = White
-    "   } else if ((levelX == 1.0) && (levelY == 0.0)) {\n"+
-    "       color = vec4(1.0, 0.0, 0.0, 1.0);\n"+               //  1:2 = Red
-    "   } else if ((levelX == 1.0) && (levelY == 1.0)) {\n"+
-    "       color = vec4(0.0, 1.0, 0.0, 1.0);\n"+               //  1:4 = Green
-    "   } else if ((levelX == 2.0) && (levelY == 1.0)) {\n"+
-    "       color = vec4(0.0, 0.0, 1.0, 1.0);\n"+               //  1:8 = Blue
-    "   } else if ((levelX == 2.0) && (levelY == 2.0)) {\n"+
-    "       color = vec4(1.0, 0.0, 1.0, 1.0);\n"+               //  1:16 = Purple
-    "   }\n"+
-    "	outColor = color;\n"+
-	"}\n";
+          "   highp vec2 dx = dFdx(gl_FragCoord.xy), dy = dFdy(gl_FragCoord.xy);\n"+
+          "   highp float levelX = floor(0.5*log2(dot(dx, dx)));\n"+
+          "   highp float levelY = floor(0.5*log2(dot(dy, dy)));\n" +
+          "   lowp vec4 color = vec4(0.0, 0.0, 0.0, 1.0);\n"+
+          "   if ((levelX == 0.0) && (levelY == 0.0)) {\n"+
+          "       color = vec4(1.0, 1.0, 1.0, 1.0);\n"+               //  1:1 = White
+          "   } else if ((levelX == 1.0) && (levelY == 0.0)) {\n"+
+          "       color = vec4(1.0, 0.0, 0.0, 1.0);\n"+               //  1:2 = Red
+          "   } else if ((levelX == 1.0) && (levelY == 1.0)) {\n"+
+          "       color = vec4(0.0, 1.0, 0.0, 1.0);\n"+               //  1:4 = Green
+          "   } else if ((levelX == 2.0) && (levelY == 1.0)) {\n"+
+          "       color = vec4(0.0, 0.0, 1.0, 1.0);\n"+               //  1:8 = Blue
+          "   } else if ((levelX == 2.0) && (levelY == 2.0)) {\n"+
+          "       color = vec4(1.0, 0.0, 1.0, 1.0);\n"+               //  1:16 = Purple
+          "   }\n"+
+          "	outColor = color;\n"+
+        "}\n";
 
-console.log(vertexShaderSource);
+      console.log(vertexShaderSource);
       var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
       console.log(fragmentShaderSource);
       var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
