@@ -548,6 +548,15 @@ found in the LICENSE file.
             let views = vrDisplay.getViews ? vrDisplay.getViews() : [];
             //console.log("views: " + vrDisplay.getViews);
             if (views && views.length > 0) {
+
+              const leftVP =  { x: 0,             y: 0, width:webglCanvas.width * 0.5, height:webglCanvas.height };
+              const rightVP = { x: webglCanvas.width * 0.5, y: 0, width:webglCanvas.width * 0.5, height:webglCanvas.height };
+
+              //gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
+              renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
+                rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, 2);
+/*
+              
               if (views[0].getAttributes().multiview) {
                 // We should have only one view in MV case
                 if (!reported) {
@@ -563,7 +572,7 @@ found in the LICENSE file.
                 //renderFrame(gl, viewports[0], frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewports[1], frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 2);
                 let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
                 renderFrame(gl, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, t, 1);
-              }
+              }  */
 
               // If we're currently presenting to the VRDisplay we need to
               // explicitly indicate we're done rendering.
