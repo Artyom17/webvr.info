@@ -545,47 +545,34 @@ found in the LICENSE file.
           if (vrDisplay.isPresenting) {
             // When presenting render a stereo view.
 
-            let views = vrDisplay.getViews ? vrDisplay.getViews() : [];
-            //console.log("views: " + vrDisplay.getViews);
-            if (views && views.length > 0) {
+            const leftVP =  { x: 0,             y: 0, width:webglCanvas.width * 0.5, height:webglCanvas.height };
+            const rightVP = { x: webglCanvas.width * 0.5, y: 0, width:webglCanvas.width * 0.5, height:webglCanvas.height };
 
-              const leftVP =  { x: 0,             y: 0, width:webglCanvas.width * 0.5, height:webglCanvas.height };
-              const rightVP = { x: webglCanvas.width * 0.5, y: 0, width:webglCanvas.width * 0.5, height:webglCanvas.height };
-
-              //gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
-              renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
-                rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, 2);
+            //gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
+            renderFrame(gl, leftVP,  frameData.leftProjectionMatrix,  frameData.leftViewMatrix, 
+              rightVP, frameData.rightProjectionMatrix, frameData.rightViewMatrix, 2);
 /*
-              
-              if (views[0].getAttributes().multiview) {
-                // We should have only one view in MV case
-                if (!reported) {
-                  console.log("Rendering with multiview!");
-                  reported = true;
-                }
-                let view = views[0];
-                let viewport = view.getViewport();
-                gl.bindFramebuffer(gl.FRAMEBUFFER, view.framebuffer);
-                renderFrame(gl, viewport, frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewport, frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 1);
+            
+            if (views[0].getAttributes().multiview) {
+              // We should have only one view in MV case
+              if (!reported) {
+                console.log("Rendering with multiview!");
+                reported = true;
               }
-              else {
-                //renderFrame(gl, viewports[0], frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewports[1], frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 2);
-                let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
-                renderFrame(gl, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, t, 1);
-              }  */
-
-              // If we're currently presenting to the VRDisplay we need to
-              // explicitly indicate we're done rendering.
-              vrDisplay.submitFrame();
+              let view = views[0];
+              let viewport = view.getViewport();
+              gl.bindFramebuffer(gl.FRAMEBUFFER, view.framebuffer);
+              renderFrame(gl, viewport, frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewport, frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 1);
             }
             else {
-                let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
-                renderFrame(gl, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, t, 1);
+              //renderFrame(gl, viewports[0], frameData.leftProjectionMatrix, frameData.leftViewMatrix, viewports[1], frameData.rightProjectionMatrix, frameData.rightViewMatrix, t, 2);
+              let VP =  { x: 0, y: 0, width:webglCanvas.width, height:webglCanvas.height };
+              renderFrame(gl, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, VP, frameData.leftProjectionMatrix, frameData.leftViewMatrix, t, 1);
+            }  */
 
-              // If we're currently presenting to the VRDisplay we need to
-              // explicitly indicate we're done rendering.
-              vrDisplay.submitFrame();
-            }
+            // If we're currently presenting to the VRDisplay we need to
+            // explicitly indicate we're done rendering.
+            vrDisplay.submitFrame();
           } else {
             //window.requestAnimationFrame(onAnimationFrame);
             // When not presenting render a mono view that still takes pose into
